@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎉 跨年倒计时祝福 ✨</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0c2461, #1e3799, #4a69bd);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .snowflake {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 10;
+            animation: containerAppear 1s ease-out;
+        }
+        
+        @keyframes containerAppear {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .dogs {
+            font-family: monospace;
+            font-size: 24px;
+            text-align: center;
+            margin: 20px 0;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+            animation: dogAnimation 2s infinite alternate;
+        }
+        
+        @keyframes dogAnimation {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+        
+        .title {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 2.8em;
+            color: #FFD700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+            animation: titleGlow 3s infinite alternate;
+        }
+        
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 15px rgba(255, 215, 0, 0.8); }
+            100% { text-shadow: 0 0 25px rgba(255, 215, 0, 1), 0 0 35px rgba(255, 100, 100, 0.8); }
+        }
+        
+        .time-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .current-time {
+            font-size: 2.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #FFD700;
+        }
+        
+        .countdown {
+            font-size: 1.8em;
+            color: #FF6B6B;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        
+        .message-box {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            line-height: 1.8;
+            font-size: 1.2em;
+            border-left: 5px solid #FFD700;
+        }
+        
+        .special-text {
+            font-size: 1.6em;
+            color: #FFD700;
+            font-weight: bold;
+            margin: 30px 0;
+            padding: 20px;
+            text-align: center;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 15px;
+            border: 2px dashed #FFD700;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 215, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+        }
+        
+        .fireworks {
+            font-size: 40px;
+            text-align: center;
+            margin: 20px 0;
+            letter-spacing: 10px;
+        }
+        
+        .firework {
+            display: inline-block;
+            animation: fireworkFly 1.5s infinite;
+        }
+        
+        @keyframes fireworkFly {
+            0%, 100% { transform: translateY(0); opacity: 1; }
+            50% { transform: translateY(-20px); opacity: 0.7; }
+        }
+        
+        /* 音乐播放器样式 */
+        .music-player {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50px;
+            padding: 12px 25px;
+            margin: 25px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            width: fit-content;
+            max-width: 90%;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .music-btn {
+            background: rgba(255, 215, 0, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 20px;
+            color: #0c2461;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .music-btn:hover {
+            background: rgba(255, 215, 0, 1);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+        }
+        
+        .music-info {
+            font-size: 1.1em;
+            color: #FFD700;
+            font-weight: bold;
+            text-align: center;
+            min-width: 180px;
+        }
+        
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .volume-slider {
+            width: 80px;
+            height: 5px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #FFD700;
+            cursor: pointer;
+        }
+        
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .title {
+                font-size: 2em;
+            }
+            
+            .current-time {
+                font-size: 1.8em;
+            }
+            
+            .dogs {
+                font-size: 18px;
+            }
+            
+            .fireworks {
+                font-size: 30px;
+                letter-spacing: 5px;
+            }
+            
+            .music-player {
+                flex-wrap: wrap;
+                gap: 15px;
+                padding: 15px;
+            }
+            
+            .music-info {
+                order: -1;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 雪花背景 -->
+    <div id="snow-container"></div>
+    
+    <!-- 主要内容 -->
+    <div class="container">
+        <!-- 小狗图案 -->
+        <div class="dogs">
+            /\_/\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/\_/\<br>
+           ( o.o )&nbsp;&nbsp;&nbsp;( o.o )<br>
+            &gt; ^ &lt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt; ^ &lt;
+        </div>
+        
+        <!-- 标题 -->
+        <h1 class="title">✨ 跨年倒计时祝福 ✨</h1>
+        
+        <!-- 烟花动画 -->
+        <div class="fireworks">
+            <span class="firework">🎆</span>
+            <span class="firework">🎇</span>
+            <span class="firework">✨</span>
+            <span class="firework">🎆</span>
+            <span class="firework">🎇</span>
+            <span class="firework">✨</span>
+        </div>
+        
+        <!-- 时间显示 -->
+        <div class="time-section">
+            <div class="current-time" id="current-time">正在加载时间...</div>
+            <div class="countdown" id="countdown"></div>
+        </div>
+        
+        <!-- 音乐播放器 -->
+        <div class="music-player">
+            <div class="music-info" id="music-status">点击播放背景音乐 🎵</div>
+            <button class="music-btn" id="play-btn" title="播放">▶️</button>
+            <button class="music-btn" id="pause-btn" title="暂停">⏸️</button>
+            <div class="volume-control">
+                <span style="color:#FFD700;">🔉</span>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="60" title="调节音量">
+            </div>
+        </div>
+        
+        <!-- 祝福语 -->
+        <div class="message-box">
+            <p>🌟 亲爱的朋友：</p>
+            <p>在这辞旧迎新的时刻，</p>
+            <p>愿新年的钟声为你带来</p>
+            <p>平安、喜乐和满满的幸福！</p>
+            <p>愿所有美好如期而至，</p>
+            <p>愿所有梦想都能成真！</p>
+        </div>
+        
+        <!-- 特殊文字 -->
+        <div class="special-text">
+            💌 请转发给10个最好的朋友 💌
+        </div>
+        
+        <!-- 新年祝福 -->
+        <div class="message-box" style="text-align: center;">
+            <p>让这份祝福传递下去！</p>
+            <p id="next-year"></p>
+        </div>
+        
+        <!-- 页脚 -->
+        <div class="footer">
+            <p>🎊 祝你新年快乐，万事如意！ 🎊</p>
+            <p>页面将自动更新时间</p>
+        </div>
+    </div>
+
+    <!-- 背景音乐 -->
+    <!-- 替换提示：将下面src中的"your-music.mp3"换成你的音乐文件路径 -->
+    <audio id="bg-music" loop>
+        <source src="2023春节倒计时 - 春风十里报新年_L (V0).mp3" type="audio/mpeg">
+        <source src="your-music.ogg" type="audio/ogg">
+        您的浏览器不支持音频播放。
+    </audio>
+
+    <script>
+        // 雪花效果
+        function createSnowflakes() {
+            const snowContainer = document.getElementById('snow-container');
+            const snowflakeCount = 50;
+            
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                
+                // 随机大小
+                const size = Math.random() * 10 + 5;
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                
+                // 随机位置
+                snowflake.style.left = `${Math.random() * 100}vw`;
+                snowflake.style.top = `${Math.random() * 100}vh`;
+                
+                // 随机透明度
+                snowflake.style.opacity = Math.random() * 0.7 + 0.3;
+                
+                // 随机动画
+                const duration = Math.random() * 10 + 10;
+                snowflake.style.animation = `fall ${duration}s linear infinite`;
+                
+                // 添加到容器
+                snowContainer.appendChild(snowflake);
+                
+                // 创建自定义下落动画
+                const keyframes = `@keyframes fall {
+                    0% { transform: translateY(-100px) translateX(0px); }
+                    100% { transform: translateY(100vh) translateX(${Math.random() * 200 - 100}px); }
+                }`;
+                
+                const styleSheet = document.createElement('style');
+                styleSheet.textContent = keyframes;
+                document.head.appendChild(styleSheet);
+            }
+        }
+        
+        // 更新时间函数
+        function updateTime() {
+            const now = new Date();
+            const currentTimeElement = document.getElementById('current-time');
+            const countdownElement = document.getElementById('countdown');
+            const nextYearElement = document.getElementById('next-year');
+            
+            // 显示当前时间
+            currentTimeElement.textContent = now.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                weekday: 'long',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            
+            // 计算离明年还有多久
+            const nextYear = now.getFullYear() + 1;
+            const newYear = new Date(nextYear, 0, 1, 0, 0, 0);
+            const timeLeft = newYear - now;
+            
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            countdownElement.textContent = `距离${nextYear}年还有: ${days}天 ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            nextYearElement.textContent = `🎄 祝你 ${nextYear} 新年快乐！ 🎄`;
+            
+            // 新年到来时的特殊效果
+            if (timeLeft < 1000 && timeLeft > 0) {
+                celebrateNewYear();
+            }
+        }
+        
+        // 新年庆祝效果
+        function celebrateNewYear() {
+            // 添加庆祝效果
+            const title = document.querySelector('.title');
+            title.textContent = '🎉 新年快乐！ 🎉';
+            title.style.animation = 'titleGlow 0.5s infinite alternate';
+            
+            // 添加更多烟花效果
+            const fireworks = document.querySelector('.fireworks');
+            for (let i = 0; i < 10; i++) {
+                const firework = document.createElement('span');
+                firework.classList.add('firework');
+                firework.textContent = '🎆';
+                firework.style.animationDelay = `${i * 0.2}s`;
+                fireworks.appendChild(firework);
+            }
+            
+            // 自动播放音乐庆祝新年
+            const audio = document.getElementById('bg-music');
+            const musicStatus = document.getElementById('music-status');
+            if (audio && musicStatus.textContent.includes('暂停')) {
+                audio.currentTime = 0;
+                audio.play();
+                musicStatus.innerHTML = '<span style="color:#4ECDC4;">🎉 新年快乐！音乐播放中</span>';
+            }
+        }
+        
+        // 音乐控制功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const audio = document.getElementById('bg-music');
+            const playBtn = document.getElementById('play-btn');
+            const pauseBtn = document.getElementById('pause-btn');
+            const volumeSlider = document.getElementById('volume-slider');
+            const musicStatus = document.getElementById('music-status');
+            
+            // 设置初始音量
+            audio.volume = volumeSlider.value / 100;
+            
+            // 播放按钮
+            playBtn.addEventListener('click', () => {
+                audio.play();
+                musicStatus.innerHTML = '<span style="color:#4ECDC4;">背景音乐播放中 🎵</span>';
+            });
+            
+            // 暂停按钮
+            pauseBtn.addEventListener('click', () => {
+                audio.pause();
+                musicStatus.innerHTML = '<span style="color:#FF6B6B;">背景音乐已暂停</span>';
+            });
+            
+            // 音量控制
+            volumeSlider.addEventListener('input', () => {
+                audio.volume = volumeSlider.value / 100;
+            });
+            
+            // 自动播放尝试（需要用户交互后）
+            let autoPlayAttempted = false;
+            document.body.addEventListener('click', function initAutoPlay() {
+                if (!autoPlayAttempted) {
+                    setTimeout(() => {
+                        audio.play().then(() => {
+                            musicStatus.innerHTML = '<span style="color:#4ECDC4;">背景音乐自动播放中 🎵</span>';
+                        }).catch(e => {
+                            // 自动播放被阻止，显示提示
+                            musicStatus.innerHTML = '点击播放按钮开始音乐 ▶️';
+                        });
+                        autoPlayAttempted = true;
+                    }, 500);
+                    // 移除事件监听器，避免重复尝试
+                    document.body.removeEventListener('click', initAutoPlay);
+                }
+            });
+            
+            // 音乐播放状态跟踪
+            audio.addEventListener('play', () => {
+                musicStatus.innerHTML = '<span style="color:#4ECDC4;">背景音乐播放中 🎵</span>';
+            });
+            
+            audio.addEventListener('pause', () => {
+                if (!audio.ended) {
+                    musicStatus.innerHTML = '<span style="color:#FF6B6B;">背景音乐已暂停</span>';
+                }
+            });
+            
+            audio.addEventListener('ended', () => {
+                musicStatus.innerHTML = '音乐播放完毕，点击播放按钮重新开始';
+            });
+            
+            // 初始化雪花
+            createSnowflakes();
+            
+            // 初始化时间
+            updateTime();
+            
+            // 每秒更新一次时间
+            setInterval(updateTime, 1000);
+        });
+    </script>
+</body>
+</html>
