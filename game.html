@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=no">
+    <title>🌸 花漾连连看 · 记忆甜心</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Helvetica Neue', 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #ffdde1 0%, #f9c9d7 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            margin: 0;
+            position: relative;
+        }
+
+        /* 漂浮小装饰 —— 少女心满满 */
+        body::before {
+            content: "🌸🌸🌸";
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 28px;
+            opacity: 0.2;
+            white-space: nowrap;
+            transform: rotate(-5deg);
+            pointer-events: none;
+        }
+
+        body::after {
+            content: "✨✨✨";
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 32px;
+            opacity: 0.2;
+            transform: rotate(8deg);
+            pointer-events: none;
+        }
+
+        .game-container {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(255, 245, 240, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 48px 48px 32px 32px;
+            padding: 24px 20px 30px;
+            box-shadow: 0 20px 30px rgba(244, 154, 194, 0.25);
+            border: 2px solid #fff9;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 可爱头部 */
+        .game-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding: 0 10px;
+        }
+
+        .title-area {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #ac4f7c;
+            text-shadow: 3px 3px 0 #ffe2ec;
+            letter-spacing: 2px;
+        }
+
+        .title span {
+            font-size: 2rem;
+        }
+
+        .stats {
+            display: flex;
+            gap: 18px;
+            background: #ffeaef;
+            padding: 10px 18px;
+            border-radius: 40px;
+            box-shadow: inset 0 2px 6px #ffccd5, 0 6px 0 #d48c9c;
+            border: 1px solid #ffbbc5;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #7a3e4f;
+        }
+
+        .stat-icon {
+            font-size: 1.4rem;
+        }
+
+        .reset-btn {
+            background: #ffb6c1;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 24px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #5d2e3b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 0 #b3747e, 0 10px 20px rgba(200, 100, 120, 0.3);
+            transition: all 0.06s ease;
+            border: 2px solid #fff9;
+            cursor: pointer;
+        }
+
+        .reset-btn:active {
+            transform: translateY(8px);
+            box-shadow: 0 2px 0 #b3747e, 0 10px 20px rgba(200, 100, 120, 0.2);
+        }
+
+        /* 游戏板 —— 4x4 温柔网格 */
+        .board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            justify-content: center;
+            margin-bottom: 25px;
+            padding: 8px;
+        }
+
+        /* 卡片样式 —— 软萌翻糖感 */
+        .card {
+            aspect-ratio: 1 / 1;
+            background: #fffbf0;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            box-shadow: 0 12px 0 #d496a6, 0 10px 20px rgba(160, 80, 100, 0.2);
+            border: 3px solid #ffe9f0;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+            transform: scale(1);
+            user-select: none;
+            color: #5c3e45;
+            background: linear-gradient(145deg, #fff9fb, #ffeef2);
+            position: relative;
+        }
+
+        /* 卡片背面统一小花花，正面对应不同emoji */
+        .card:active {
+            transform: scale(0.94);
+            box-shadow: 0 6px 0 #d496a6, 0 10px 20px rgba(160, 80, 100, 0.2);
+        }
+
+        /* 已配对卡片 —— 温柔光晕，不可点击 */
+        .card.matched {
+            box-shadow: 0 0 0 3px #ffe5b4, 0 8px 0 #b8838f, 0 10px 20px rgba(120, 70, 80, 0.15);
+            background: #fff1e7;
+            border: 3px solid #ffe0b5;
+            cursor: default;
+            pointer-events: none;
+            opacity: 0.9;
+            transform: translateY(4px);
+            filter: drop-shadow(0 4px 6px #ffcaca);
+        }
+
+        /* 翻转状态（临时翻开） */
+        .card.flipped {
+            background: #fff0f5;
+            border: 3px solid #ffb7c5;
+            box-shadow: 0 6px 0 #d496a6, 0 10px 20px rgba(200, 120, 140, 0.25);
+        }
+
+        /* 胜利消息小甜点 */
+        .message-area {
+            text-align: center;
+            padding: 10px 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #9f4d6a;
+            background: #ffecf0cc;
+            border-radius: 60px;
+            margin: 10px 20px 0;
+            border: 2px dashed #ff90a5;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 60px;
+        }
+
+        .footer-whisper {
+            color: #ba7a8a;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 480px) {
+            .game-container {
+                padding: 16px 12px;
+                border-radius: 36px;
+            }
+            .card {
+                font-size: 2.2rem;
+            }
+            .title {
+                font-size: 1.5rem;
+            }
+            .stats {
+                padding: 6px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- 头部：标题、步数/配对、重置按钮 -->
+        <div class="game-header">
+            <div class="title-area">
+                <div class="title">
+                    <span>🌸</span> 花漾记
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-icon">👣</span>
+                    <span id="move-counter">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">🧁</span>
+                    <span id="pair-counter">0/8</span>
+                </div>
+            </div>
+            <button class="reset-btn" id="reset-button">
+                <span>🔄</span> 新一局
+            </button>
+        </div>
+
+        <!-- 游戏卡片区域 4x4 由JS动态生成 -->
+        <div class="board" id="game-board"></div>
+
+        <!-- 萌萌消息区：胜利/提示 -->
+        <div class="message-area" id="message-banner">
+            💕 翻开卡片，配对成功吧～
+        </div>
+        <div class="footer-whisper">
+            —— 给甜甜的你 · 慢慢玩 ——
+        </div>
+    </div>
+
+    <script>
+        (function(){
+            "use strict";
+
+            // ---------- 少女心主题配置 ----------
+            // 背面图案：所有未翻开/未匹配的卡片统一显示小雏菊🌼（可换成🌸但为了区分正面使用🌼）
+            const CARD_BACK = '🌼';
+            
+            // 正面8对可爱图案 —— 软萌+花+爱心，完全女生向
+            const PAIR_EMOJIS = ['🐱', '🐶', '🐰', '🦊', '🐻', '🐼', '🌸', '❤️'];
+            const TOTAL_PAIRS = PAIR_EMOJIS.length;     // 8对
+            const TOTAL_CARDS = TOTAL_PAIRS * 2;        // 16张，4x4
+
+            // ---------- 全局变量 ----------
+            let boardEl = document.getElementById('game-board');
+            let moveSpan = document.getElementById('move-counter');
+            let pairSpan = document.getElementById('pair-counter');
+            let messageEl = document.getElementById('message-banner');
+
+            let lockBoard = false;              // 是否锁定（比如等待翻转回去）
+            let flippedCards = [];              // 当前翻开（临时）的卡片元素数组，最多2个
+            let moves = 0;                     // 步数
+            let matchedPairs = 0;              // 已成功配对的数量
+            let flipTimeout = null;            // 不匹配时延迟翻转的定时器
+
+            // ---------- 辅助函数 ----------
+            // 洗牌算法 (Fisher–Yates)
+            function shuffleArray(arr) {
+                for (let i = arr.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+                return arr;
+            }
+
+            // 生成16张卡片的配对ID (0,0,1,1,2,2...7,7) 并打乱
+            function generateShuffledPairs() {
+                let pairs = [];
+                for (let i = 0; i < TOTAL_PAIRS; i++) {
+                    pairs.push(i, i);   // 每对出现两次
+                }
+                return shuffleArray(pairs);
+            }
+
+            // 更新UI上的步数 & 配对进度
+            function updateStats() {
+                moveSpan.textContent = moves;
+                pairSpan.textContent = `${matchedPairs}/${TOTAL_PAIRS}`;
+            }
+
+            // 显示胜利消息 —— 甜度满分
+            function showWinMessage() {
+                messageEl.innerHTML = '🎉✨ 太厉害啦！全部配对成功！✨🎉 <span style="font-size:1.8rem;">🍰🌸</span>';
+            }
+
+            // 重置胜利/普通消息
+            function resetMessage() {
+                messageEl.innerHTML = '💕 翻开卡片，配对成功吧～';
+            }
+
+            // 清除定时器，避免冲突
+            function clearFlipTimeout() {
+                if (flipTimeout) {
+                    clearTimeout(flipTimeout);
+                    flipTimeout = null;
+                }
+            }
+
+            // ---------- 卡片匹配核心逻辑 ----------
+            // 检查当前翻开的两张卡片是否配对
+            function checkMatch() {
+                // 确保有两张卡片
+                if (flippedCards.length !== 2) return;
+
+                const card1 = flippedCards[0];
+                const card2 = flippedCards[1];
+                const pair1 = card1.dataset.pairid;
+                const pair2 = card2.dataset.pairid;
+
+                // 防止意外：如果是同一张卡片（几乎不可能，但防御）
+                if (card1 === card2) {
+                    flippedCards = [];
+                    return;
+                }
+
+                // ---------- 配对成功 ♥ ----------
+                if (pair1 === pair2) {
+                    // 标记两张卡片为已匹配
+                    card1.classList.add('matched');
+                    card2.classList.add('matched');
+                    card1.classList.remove('flipped'); // 移除翻转状态，改用matched样式
+                    card2.classList.remove('flipped');
+                    card1.dataset.matched = 'true';
+                    card2.dataset.matched = 'true';
+
+                    // 配对计数+1
+                    matchedPairs++;
+                    updateStats();
+
+                    // 清空本次翻开的数组
+                    flippedCards = [];
+
+                    // 检查是否全部配对完毕 (胜利!)
+                    if (matchedPairs === TOTAL_PAIRS) {
+                        showWinMessage();
+                    }
+                } 
+                // ---------- 配对失败：短暂展示后翻回背面 ----------
+                else {
+                    lockBoard = true;   // 锁定，不可点击新卡片
+
+                    // 设置定时器，0.7秒后翻回（温柔延迟）
+                    flipTimeout = setTimeout(function() {
+                        // 翻回这两张卡片：内容改为背面小花，移除翻转类
+                        card1.textContent = CARD_BACK;
+                        card2.textContent = CARD_BACK;
+                        card1.classList.remove('flipped');
+                        card2.classList.remove('flipped');
+
+                        // 清空翻转数组并解锁
+                        flippedCards = [];
+                        lockBoard = false;
+
+                        // 清除定时器标记
+                        flipTimeout = null;
+                    }, 700);
+                }
+
+                // 无论成功失败，已经检查完一对，此时翻转数组会在成功时清空，失败时延时清空；暂时不操作
+            }
+
+            // ---------- 处理卡片点击（翻牌）----------
+            function onCardClick(e) {
+                const card = e.currentTarget;
+
+                // 条件判断：不可点击的情况
+                // 1. 全局锁定（正在等待翻转返回）
+                if (lockBoard) return;
+                // 2. 卡片已永久匹配（有matched类或者dataset标记）
+                if (card.classList.contains('matched') || card.dataset.matched === 'true') return;
+                // 3. 卡片已经处于翻开状态（防止重复点同一张）
+                if (card.classList.contains('flipped')) return;
+                // 4. 已经翻开两张卡片且还未处理（实际上锁状态会拦住，但多一层防御）
+                if (flippedCards.length >= 2) return;
+
+                // ---------- 有效点击：增加步数，翻转卡片----------
+                moves++;
+                updateStats();
+
+                // 获取配对ID，将卡片正面显示为对应的可爱图案
+                const pairId = card.dataset.pairid;
+                card.textContent = PAIR_EMOJIS[pairId];
+                card.classList.add('flipped');
+
+                // 存入翻转数组
+                flippedCards.push(card);
+
+                // 如果恰好翻开了2张卡片，立即检查是否配对
+                if (flippedCards.length === 2) {
+                    checkMatch();
+                }
+            }
+
+            // ---------- 重置/初始化游戏板 ----------
+            function initBoard() {
+                // 1. 清理之前的任何待执行定时器
+                clearFlipTimeout();
+                
+                // 2. 重置状态变量
+                lockBoard = false;
+                flippedCards = [];
+                moves = 0;
+                matchedPairs = 0;
+
+                // 3. 更新UI计数、消息
+                updateStats();
+                resetMessage();
+
+                // 4. 生成新的卡片配对ID序列 (打乱顺序)
+                const pairIds = generateShuffledPairs();
+
+                // 5. 清空棋盘，重新构造卡片
+                boardEl.innerHTML = '';
+
+                // 6. 根据pairIds数组逐一创建div卡片
+                pairIds.forEach((pairId, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'card';                // 基础卡片样式
+                    card.textContent = CARD_BACK;           // 默认背面小花花
+                    card.dataset.pairid = pairId;           // 存储配对组ID (0~7)
+                    card.dataset.index = index;             // 索引（备用）
+                    card.dataset.matched = 'false';         // 初始未匹配
+
+                    // 添加点击监听
+                    card.addEventListener('click', onCardClick);
+                    boardEl.appendChild(card);
+                });
+            }
+
+            // ---------- 重置按钮绑定 ----------
+            function bindResetButton() {
+                const resetBtn = document.getElementById('reset-button');
+                resetBtn.addEventListener('click', function() {
+                    // 重置一切，焕新开局！
+                    initBoard();
+                });
+            }
+
+            // ---------- 页面加载，启动游戏 ----------
+            window.addEventListener('DOMContentLoaded', function() {
+                initBoard();
+                bindResetButton();
+            });
+        })();
+    </script>
+</body>
+</html>
