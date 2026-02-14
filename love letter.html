@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>💌 专属情人节惊喜 · 致最爱</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            min-height: 100vh;
+            background: radial-gradient(circle at 30% 30%, #ffdde1, #f9c9d6, #ffb6c1);
+            background-attachment: fixed;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .wrapper {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .floating-hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .stage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            z-index: 10;
+        }
+
+        #pre-stage {
+            opacity: 1;
+            visibility: visible;
+            background: transparent;
+        }
+
+        #post-stage {
+            opacity: 0;
+            visibility: hidden;
+            background: transparent;
+        }
+
+        .glass-card {
+            background: rgba(255, 240, 245, 0.4);
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            border-radius: 48px 24px 48px 24px;
+            box-shadow: 0 25px 50px -8px rgba(255, 105, 180, 0.4), 0 0 0 2px rgba(255, 255, 255, 0.5) inset;
+            padding: 2.2rem 2rem;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            transform: scale(1);
+            transition: transform 0.3s;
+        }
+
+        .glass-card:hover {
+            transform: scale(1.01);
+        }
+
+        .gift-icon {
+            font-size: 6rem;
+            color: #ff4d6d;
+            filter: drop-shadow(0 10px 15px rgba(255, 77, 109, 0.5));
+            animation: softPulse 2s infinite ease-in-out;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes softPulse {
+            0% { transform: scale(1); text-shadow: 0 0 10px #ffb3c6; }
+            50% { transform: scale(1.1); text-shadow: 0 0 25px #ff80a5; }
+            100% { transform: scale(1); text-shadow: 0 0 10px #ffb3c6; }
+        }
+
+        h1, h2 {
+            font-family: 'Dancing Script', cursive;
+            font-weight: 700;
+            color: #a63b4b;
+            text-shadow: 3px 3px 0 rgba(255, 255, 255, 0.6);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 2.8rem;
+            margin: 0.5rem 0;
+        }
+
+        .lead-text {
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: #831d3a;
+            background: rgba(255, 255, 255, 0.3);
+            display: inline-block;
+            padding: 0.5rem 1.8rem;
+            border-radius: 50px;
+            backdrop-filter: blur(4px);
+            margin: 1.2rem 0;
+            letter-spacing: 1px;
+        }
+
+        .code-love {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: #b3415c;
+            margin: 1rem 0 1rem;
+            text-shadow: 2px 2px 0 rgba(255, 255, 240, 0.6);
+            background: rgba(255, 255, 255, 0.25);
+            padding: 0.6rem 1.5rem;
+            border-radius: 60px;
+            display: inline-block;
+            backdrop-filter: blur(3px);
+            border: 1px dashed #ffb0c0;
+            line-height: 1.4;
+        }
+
+        .surprise-btn {
+            background: #ff4d6d;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 600;
+            padding: 1.2rem 2.8rem;
+            border-radius: 60px;
+            box-shadow: 0 15px 25px -5px #ff4d6d, 0 0 0 3px rgba(255,255,240,0.7);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 1.8rem;
+            font-family: 'Quicksand', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .surprise-btn i {
+            font-size: 2.2rem;
+            transition: transform 0.2s;
+        }
+
+        .surprise-btn:hover {
+            background: #ff3355;
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 25px 35px -3px #ff3355, 0 0 0 3px #fff0f5;
+        }
+
+        .surprise-btn:hover i {
+            transform: rotate(10deg);
+        }
+
+        .surprise-btn:active {
+            transform: scale(0.98);
+        }
+
+        .love-letter {
+            font-size: 1.5rem;
+            line-height: 1.8;
+            color: #4e2b36;
+            margin: 1.8rem 0;
+            white-space: pre-line;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: 40px 12px 40px 12px;
+            backdrop-filter: blur(3px);
+            border: 1px dashed #ff98a8;
+        }
+
+        .love-letter p {
+            margin: 1rem 0;
+            font-weight: 500;
+        }
+
+        .love-letter i {
+            color: #c9184a;
+            margin: 0 4px;
+        }
+
+        .signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.6rem;
+            font-weight: 700;
+            color: #b3415c;
+            margin-top: 1.2rem;
+            border-top: 2px solid #ffb3c6;
+            padding-top: 1rem;
+            display: inline-block;
+        }
+
+        .small-roses {
+            color: #ff4d6d;
+            font-size: 2rem;
+            letter-spacing: 8px;
+            margin: 1rem 0;
+        }
+
+        @media (max-width: 500px) {
+            h1 { font-size: 2.8rem; }
+            h2 { font-size: 2.4rem; }
+            .glass-card { padding: 1.5rem; }
+            .love-letter { font-size: 1.3rem; }
+            .surprise-btn { font-size: 1.5rem; padding: 1rem 2rem; }
+            .code-love { font-size: 1.6rem; }
+        }
+
+        .heart-float {
+            position: absolute;
+            pointer-events: none;
+            user-select: none;
+            white-space: nowrap;
+            animation: floatDown 4s linear forwards;
+            filter: drop-shadow(0 5px 8px rgba(255, 60, 120, 0.4));
+            z-index: 9999;
+        }
+
+        @keyframes floatDown {
+            0% {
+                top: -10%;
+                opacity: 0.9;
+                transform: rotate(0deg) scale(1);
+            }
+            70% {
+                opacity: 0.6;
+                transform: rotate(15deg) scale(1.2);
+            }
+            100% {
+                top: 110%;
+                opacity: 0;
+                transform: rotate(30deg) scale(1.4);
+            }
+        }
+
+        .static-sparkle {
+            position: absolute;
+            color: rgba(255, 255, 180, 0.6);
+            font-size: 1.5rem;
+            z-index: 1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- 静态小星星背景 -->
+        <div class="static-sparkle" style="top: 15%; left: 5%;">✨</div>
+        <div class="static-sparkle" style="top: 80%; left: 92%;">✨</div>
+        <div class="static-sparkle" style="top: 45%; left: 88%;">🌟</div>
+        <div class="static-sparkle" style="top: 70%; left: 12%;">💫</div>
+        <div class="static-sparkle" style="top: 20%; left: 85%;">⭐</div>
+
+        <!-- 漂浮爱心层 -->
+        <div class="floating-hearts" id="floatingHearts"></div>
+
+        <!-- 初始界面  pre-stage  礼物盒 + 刻爱句子 -->
+        <div id="pre-stage" class="stage">
+            <div class="glass-card">
+                <div class="gift-icon">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <h1>宝贝, 有个惊喜</h1>
+                <div class="lead-text">
+                    <i class="fas fa-heart" style="color: #ff4d6d;"></i> 只为你准备 <i class="fas fa-heart" style="color: #ff4d6d;"></i>
+                </div>
+                <p style="font-size: 1.3rem; margin: 1rem 0; color: #942c47;">轻轻点开，接收我的全部温柔</p>
+                
+                <!-- 💖 您指定的浪漫话语 -->
+                <p class="code-love">💻 我把爱刻进代码，陪伴你一生 💖</p>
+
+                <!-- 惊喜按钮 -->
+                <button class="surprise-btn" id="openSurpriseBtn">
+                    <i class="fas fa-envelope-open-text"></i> 点击开启惊喜 <i class="fas fa-caret-right"></i>
+                </button>
+                <p style="margin-top: 1.8rem; font-size: 1.1rem; opacity: 0.8;">❤️ 今天只想和你有关 ❤️</p>
+            </div>
+        </div>
+
+        <!-- 惊喜后界面  post-stage  情书卡片（已融入您的故事） -->
+        <div id="post-stage" class="stage">
+            <div class="glass-card" style="backdrop-filter: blur(16px);">
+                <h2><i class="fas fa-heart" style="color: #ff4d6d;"></i> My Love <i class="fas fa-heart" style="color: #ff4d6d;"></i></h2>
+                <div class="small-roses">
+                    <i class="fas fa-rose"></i> <i class="fas fa-rose"></i> <i class="fas fa-rose"></i>
+                </div>
+                <div class="love-letter">
+                    <p>💌 致 我最爱的女孩：</p>
+                    <!-- 插入的句子：温柔叙事版 -->
+                    <p>我们从初中的懵懂相遇，走到高中的短暂别离。本以为缘分已尽，命运却在我们即将毕业时，悄悄安排了又一次重逢。</p>
+                    <p>遇见你，就像银河坠入梦境，每一颗星星都开始为你闪耀。</p>
+                    <p>你是我藏不住的欢喜，也是我想昭告天下的幸运。</p>
+                    <p><i class="fas fa-heart"></i> 想和你一起从晨光熹微，走到暮雪白头 <i class="fas fa-heart"></i></p>
+                    <p>情人节快乐，我的宝贝。</p>
+                </div>
+                <div class="signature">
+                    永远爱你的  陈恺文
+                </div>
+                <p style="margin-top: 1.2rem; font-size: 1.2rem;"><i class="fa-regular fa-calendar-heart"></i> 2026 · 情人节</p>
+                <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.6;">✨ 惊喜还没停 —— 看，爱心在飘落 ✨</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 背景音乐：Taylor Swift - Love Story -->
+    <audio id="bgMusic" loop preload="auto">
+        <!-- 请将 love_story.mp3 放在同目录下，或替换下方链接为在线地址 -->
+        <source src="Taylor Swift - Love Story_H (V0).mp3" type="audio/mpeg">
+        <!-- 备用在线链接（示例，请替换为真实有效链接） -->
+        <source src="YOUR_ONLINE_LINK_HERE" type="audio/mpeg">
+        您的浏览器不支持音频播放，建议下载最新版浏览器。
+    </audio>
+
+    <script>
+        (function() {
+            const preStage = document.getElementById('pre-stage');
+            const postStage = document.getElementById('post-stage');
+            const openBtn = document.getElementById('openSurpriseBtn');
+            const floatingContainer = document.getElementById('floatingHearts');
+            const bgMusic = document.getElementById('bgMusic');
+
+            let isOpened = false;
+            let heartsInterval = null;
+
+            const heartSymbols = ['❤️', '💖', '💗', '💓', '💕', '💘', '💝', '🌸', '🌹', '✨', '💞', '♥️'];
+
+            function clearAllFloatingHearts() {
+                if (floatingContainer) floatingContainer.innerHTML = '';
+            }
+
+            function createFloatingHeart() {
+                if (!floatingContainer) return;
+                const heart = document.createElement('div');
+                heart.className = 'heart-float';
+                const randomIndex = Math.floor(Math.random() * heartSymbols.length);
+                heart.textContent = heartSymbols[randomIndex];
+                const size = 1.5 + Math.random() * 3;
+                heart.style.fontSize = size + 'rem';
+                const left = Math.random() * 100;
+                heart.style.left = left + '%';
+                const rotate = Math.random() * 30 - 15;
+                heart.style.transform = `rotate(${rotate}deg)`;
+                heart.style.opacity = 0.5 + Math.random() * 0.4;
+                heart.style.color = Math.random() > 0.5 ? '#ffb3c6' : '#ff4d6d';
+                heart.addEventListener('animationend', function() {
+                    if (heart && heart.parentNode) heart.remove();
+                });
+                floatingContainer.appendChild(heart);
+            }
+
+            function startFloatingHearts() {
+                if (heartsInterval) clearInterval(heartsInterval);
+                clearAllFloatingHearts();
+                for (let i = 0; i < 18; i++) {
+                    setTimeout(() => { createFloatingHeart(); }, i * 60);
+                }
+                heartsInterval = setInterval(createFloatingHeart, 280);
+            }
+
+            function stopFloatingHearts() {
+                if (heartsInterval) {
+                    clearInterval(heartsInterval);
+                    heartsInterval = null;
+                }
+            }
+
+            function playMusic() {
+                if (bgMusic) {
+                    bgMusic.play().catch(e => {
+                        console.log('音乐自动播放失败，可能是用户未交互或文件不存在');
+                    });
+                }
+            }
+
+            function openSurprise() {
+                if (isOpened) return;
+                isOpened = true;
+                preStage.style.opacity = '0';
+                preStage.style.visibility = 'hidden';
+                postStage.style.opacity = '1';
+                postStage.style.visibility = 'visible';
+                startFloatingHearts();
+                playMusic();
+                document.body.style.transition = 'background 2s';
+                document.body.style.background = 'radial-gradient(circle at 70% 30%, #ffe4ec, #ffc0cb, #ffa5b9)';
+            }
+
+            if (openBtn) openBtn.addEventListener('click', openSurprise);
+            window.addEventListener('beforeunload', stopFloatingHearts);
+        })();
+    </script>
+
+    <!-- 隐藏小彩蛋：如果你看到了，说明你懂我的心意。情人节快乐！ -->
+    <!-- 音乐提示：请将 Taylor Swift 的《Love Story》MP3 文件命名为 love_story.mp3 并放在同一目录下，或修改 <source> 标签的 src 为有效在线链接。 -->
+</body>
+</html>
